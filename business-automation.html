@@ -33,6 +33,12 @@
   .nav .tag{font-family:ui-monospace,monospace;font-size:.68rem;letter-spacing:.12em;color:var(--muted-dk);text-transform:uppercase}
   @media(max-width:640px){.nav .tag{display:none}}
 
+  .nav-right{display:flex;align-items:center;gap:1.5rem;font-size:.92rem;font-weight:500}
+  .nav-right a{color:var(--muted-dk);transition:.15s}
+  .nav-right a:not(.btn):hover{color:var(--paper)}
+  .nav-right a.btn{color:#fff}
+  section[id],[id="top"]{scroll-margin-top:80px}
+  @media(max-width:820px){.nav-right a:not(.btn){display:none}}
   .hero{background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
   .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line-dk) 1px,transparent 1px),linear-gradient(90deg,var(--line-dk) 1px,transparent 1px);background-size:56px 56px;opacity:.35;mask-image:radial-gradient(120% 80% at 80% 0%,#000 30%,transparent 75%)}
   .hero .wrap{position:relative;padding-top:clamp(3.5rem,9vw,6rem);padding-bottom:clamp(3rem,7vw,5rem)}
@@ -113,7 +119,13 @@
 <header class="nav">
   <div class="wrap nav-inner">
     <a class="mark" href="#top"><span class="badge">CS</span>Clear&nbsp;Systems&nbsp;Studio</a>
-    <a class="btn btn-primary" href="#kontakt">Projekt anfragen</a>
+    <nav class="nav-right">
+      <a href="#leistungen">Leistungen</a>
+      <a href="#warum">Warum mit mir</a>
+      <a href="#ablauf">Ablauf</a>
+      <a href="#kontakt">Kontakt</a>
+      <a class="btn btn-primary" href="#kontakt">Projekt anfragen</a>
+    </nav>
   </div>
 </header>
 
