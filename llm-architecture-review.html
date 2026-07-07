@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>LLM / Prompt Architecture Review — Clear Systems Studio</title>
+<meta name="description" content="LLM / Prompt Architecture Review: Bestehende GPT-/Claude-/LLM-Prototypen analysieren und stabilisieren – Struktur, Zuverlässigkeit, nächste Schritte.">
+<style>
+  :root{--ink:#15171C;--ink-2:#1D2028;--paper:#E7E7E1;--paper-2:#EFEFEA;--line:#CBCBC2;--line-dk:#2C303A;--muted:#5C6069;--muted-dk:#9BA0AB;--signal:#243BE0;--signal-ink:#98A6FF;--maxw:1000px;--pad:clamp(1.25rem,5vw,3rem)}
+  *{box-sizing:border-box}html{scroll-behavior:smooth}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+  .eyebrow{font-family:ui-monospace,monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:500}
+  .btn{display:inline-flex;align-items:center;gap:.55rem;font-weight:800;font-size:.98rem;padding:.85rem 1.4rem;border-radius:2px;border:1.5px solid transparent;cursor:pointer;transition:.16s ease;line-height:1}
+  .btn-primary{background:var(--signal);color:#fff}.btn-primary:hover{background:#1a2fc4;transform:translateY(-1px)}
+  .btn-ghost{background:transparent;border-color:currentColor}.btn-ghost:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  a:focus-visible,.btn:focus-visible,summary:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(21,23,28,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line-dk);color:var(--paper)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+  .mark{display:flex;align-items:center;gap:.7rem;font-weight:800}
+  .mark .badge{width:30px;height:30px;border:1.5px solid var(--signal-ink);border-radius:2px;display:grid;place-items:center;font-size:.72rem;color:var(--signal-ink);font-family:ui-monospace,monospace}
+  .hero{background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line-dk) 1px,transparent 1px),linear-gradient(90deg,var(--line-dk) 1px,transparent 1px);background-size:56px 56px;opacity:.32;mask-image:radial-gradient(120% 80% at 82% 0%,#000 25%,transparent 78%)}
+  .hero .wrap{position:relative;padding-top:clamp(1.6rem,3.5vw,2.6rem);padding-bottom:clamp(2.8rem,6vw,4.2rem)}
+  .backlink{display:flex;width:fit-content;align-items:center;gap:.45rem;color:var(--signal-ink);font-weight:700;font-size:.95rem;margin-bottom:1.8rem}
+  .hero h1{font-weight:900;letter-spacing:-.02em;line-height:1.04;font-size:clamp(2.1rem,5.4vw,3.7rem);margin:.7rem 0 0;max-width:18ch}
+  .pill{display:inline-block;margin-top:1.1rem;font-family:ui-monospace,monospace;font-weight:700;font-size:1rem;color:var(--signal-ink);border:1.5px solid var(--line-dk);border-radius:2px;padding:.5rem .9rem}
+  .hero .sub{max-width:56ch;margin:1.3rem 0 0;color:var(--muted-dk);font-size:clamp(1rem,1.6vw,1.16rem)}
+  .hero-cta{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:2rem}
+  section{padding-block:clamp(3rem,6vw,4.8rem)}
+  .sec-head{border-top:1.5px solid var(--ink);padding-top:1rem;margin-bottom:1.8rem}
+  .sec-head h2{font-weight:800;letter-spacing:-.01em;font-size:clamp(1.5rem,3.2vw,2.2rem);margin:.4rem 0 0}
+  .lead-p{font-size:clamp(1.1rem,2vw,1.3rem);font-weight:600;line-height:1.45;max-width:60ch;margin:0}
+  .forwhom{margin-top:1.2rem;color:var(--muted);font-size:1rem;max-width:60ch}
+  .forwhom b{color:var(--ink)}
+  .deliv{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:.7rem 2rem}
+  .deliv li{position:relative;padding-left:1.7rem;font-size:1rem;line-height:1.45}
+  .deliv li::before{content:"";position:absolute;left:0;top:.5rem;width:11px;height:11px;background:var(--signal);border-radius:2px}
+  @media(max-width:640px){.deliv{grid-template-columns:1fr}}
+  .examples{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .ex{background:var(--paper-2);border:1px solid var(--line);border-radius:3px;padding:1.1rem 1.25rem;font-size:1rem;line-height:1.45}
+  @media(max-width:640px){.examples{grid-template-columns:1fr}}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:0;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .step{padding:1.2rem 1.25rem 1.4rem;border-right:1px solid var(--line)}.step:last-child{border-right:0}
+  .step .num{font-family:ui-monospace,monospace;font-weight:700;color:var(--signal);font-size:.85rem}
+  .step h4{font-weight:700;font-size:1.02rem;margin:.45rem 0 .3rem}.step p{margin:0;font-size:.88rem;color:var(--muted);line-height:1.45}
+  @media(max-width:820px){.step{border-right:0;border-bottom:1px solid var(--line)}.step:last-child{border-bottom:0}}
+  .faq details{border-top:1px solid var(--line);padding:1.1rem 0}
+  .faq details:last-child{border-bottom:1px solid var(--line)}
+  .faq summary{font-weight:700;font-size:1.08rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:1rem}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";color:var(--signal);font-weight:700}
+  .faq details[open] summary::after{content:"–"}
+  .faq p{margin:.8rem 0 0;color:var(--muted);max-width:62ch}
+  .price-box{background:var(--ink);color:var(--paper);border-radius:3px;padding:clamp(1.6rem,4vw,2.4rem);display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap}
+  .price-box .p{font-family:ui-monospace,monospace;font-weight:700;font-size:clamp(1.8rem,4vw,2.6rem);color:var(--signal-ink)}
+  .price-box .n{color:var(--muted-dk);font-size:.95rem;max-width:44ch}
+  .cta{background:var(--ink);color:var(--paper)}.cta .wrap{text-align:center}
+  .cta h2{font-weight:900;letter-spacing:-.02em;font-size:clamp(1.7rem,4vw,2.6rem);margin:0 0 1rem}
+  .cta p{color:var(--muted-dk);max-width:46ch;margin:0 auto 1.8rem}.cta .hero-cta{justify-content:center}
+  footer{background:var(--ink);color:var(--muted-dk);padding-block:2rem;border-top:1px solid var(--line-dk);font-size:.85rem}
+  footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
+  footer .mark{color:var(--paper)}footer .legal{display:flex;gap:1.3rem;font-family:ui-monospace,monospace}footer a:hover{color:var(--paper)}
+</style>
+</head>
+<body id="top">
+<header class="nav"><div class="nav-inner">
+  <a class="mark" href="business-automation.html"><span class="badge">CS</span>Clear&nbsp;Systems&nbsp;Studio</a>
+  <a class="btn btn-primary" href="#kontakt">Projekt anfragen</a>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <a class="backlink" href="business-automation.html">← Alle Leistungen</a>
+  <span class="eyebrow" style="color:var(--signal-ink)">Review · LLM Architecture</span>
+  <h1>LLM / Prompt Architecture Review</h1>
+  <span class="pill">ab 2.500 €</span>
+  <p class="sub">Ein bestehender GPT-/Claude-/LLM-Prototyp wird analysiert und stabilisiert – mit klaren Empfehlungen zu Struktur, Zuverlässigkeit und nächsten Schritten.</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="#kontakt">Projekt besprechen →</a>
+    <a class="btn btn-ghost" href="#ablauf">Ablauf ansehen</a>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">Wofür</span><h2>Das Problem, das gelöst wird.</h2></div>
+  <p class="lead-p">Viele LLM-Prototypen funktionieren in der Demo, aber nicht im Alltag: inkonsistente Outputs, unklare Prompt-Struktur, schwer wartbar. Das Review bringt Klarheit, wo es hakt – und wie es stabil und produktionsreif wird.</p>
+  <p class="forwhom"><b>Für wen:</b> Teams und Founder mit einem bestehenden KI-Prototyp, der zuverlässiger und produktiv werden soll.</p>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">Deliverables</span><h2>Das bekommst du.</h2></div>
+  <ul class="deliv">
+      <li>Analyse der bestehenden Prompt- und System-Struktur</li>
+      <li>Bewertung von Zuverlässigkeit, Fehlerquellen und Kosten</li>
+      <li>Konkrete Verbesserungen: Struktur, Guardrails, Output-Format</li>
+      <li>Priorisierte Empfehlungen und Roadmap</li>
+      <li>Optional: umgesetzte Kernverbesserungen</li>
+  </ul>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">Beispiele</span><h2>Typische Anwendungsfälle.</h2></div>
+  <div class="examples">
+      <div class="ex">Assistent liefert inkonsistente Antworten → stabilisieren</div>
+      <div class="ex">Prompt-Wildwuchs → klare, wartbare Struktur</div>
+      <div class="ex">Unklare Token-/Kostennutzung → optimieren</div>
+      <div class="ex">Prototyp soll produktiv → realistische nächste Schritte</div>
+  </div>
+</div></section>
+
+<section id="ablauf"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">Ablauf</span><h2>So läuft das Projekt.</h2></div>
+  <div class="steps">
+      <div class="step"><div class="num">01</div><h4>Sichtung</h4><p>Zugang zum Prototyp und kurze Einordnung.</p></div>
+      <div class="step"><div class="num">02</div><h4>Analyse</h4><p>Struktur, Zuverlässigkeit und Kosten bewerten.</p></div>
+      <div class="step"><div class="num">03</div><h4>Empfehlungen</h4><p>Priorisierte Roadmap mit konkreten Fixes.</p></div>
+      <div class="step"><div class="num">04</div><h4>Optional</h4><p>Umsetzung der Kernverbesserungen.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">FAQ</span><h2>Häufige Fragen.</h2></div>
+  <div class="faq">
+      <details><summary>Was brauchst du von uns?</summary><p>Zugriff auf den bestehenden Prototyp bzw. die Prompts und eine kurze Einordnung, was er tun soll.</p></details>
+      <details><summary>Setzt du die Verbesserungen auch um?</summary><p>Das Review liefert Analyse und Roadmap; die Umsetzung der Kernpunkte ist optional im Scope oder als Folge-Sprint.</p></details>
+      <details><summary>Wie steht es um Vertraulichkeit?</summary><p>Selbstverständlich vertraulich – auf Wunsch mit NDA.</p></details>
+      <details><summary>Für welche Modelle?</summary><p>Claude, GPT und vergleichbare LLMs.</p></details>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="price-box">
+    <div class="p">ab 2.500 €</div>
+    <div class="n">Startpreis für das Review. Umsetzung der empfohlenen Kernpunkte optional im Scope oder als Folge-Sprint. Laufende Begleitung per Tagessatz (ab 750 €/Tag).</div>
+  </div>
+</div></section>
+
+<section class="cta" id="kontakt"><div class="wrap">
+  <h2>Klingt passend?</h2>
+  <p>Beschreiben Sie kurz Prozess, Ziel und Zeitrahmen – Sie erhalten eine klare Einschätzung und einen konkreten Scope-Vorschlag.</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="mailto:hello@clearsystemsstudio.com?subject=Anfrage%20LLM%20/%20Prompt%20Architecture%20Review">hello@clearsystemsstudio.com</a>
+    <a class="btn btn-ghost" href="business-automation.html#kontakt">Projektformular öffnen</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <a class="mark" href="business-automation.html"><span class="badge">CS</span>Clear&nbsp;Systems&nbsp;Studio</a>
+  <div class="legal"><a href="mailto:hello@clearsystemsstudio.com">Kontakt</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div>
+</div></footer>
+</body>
+</html>
