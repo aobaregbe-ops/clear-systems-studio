@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angebotsseiten & Landingpages — Clear Systems Studio</title>
+<meta name="description" content="Ein Angebot verkauft nicht, wenn es nur hübsch aussieht. Es muss sofort verständlich machen, für wen es ist, welches Problem es löst und was der nächste Schritt ist. Ich übersetze Angebot, Zielgruppe und Nutzenversprechen in eine klare Seitenstruktur mit Copy, CTA und optionalem Lead-Funnel.">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --ink:#15171C;          /* near-ink base */
+    --ink-2:#1D2028;        /* raised ink */
+    --paper:#E7E7E1;        /* cool concrete paper */
+    --paper-2:#EFEFEA;      /* lighter card */
+    --line:#CBCBC2;         /* hairlines on paper */
+    --line-dk:#2C303A;      /* hairlines on ink */
+    --muted:#5C6069;        /* secondary text on paper */
+    --muted-dk:#9BA0AB;     /* secondary text on ink */
+    --signal:#243BE0;       /* one decisive accent */
+    --signal-ink:#98A6FF;   /* accent on dark */
+    --ok:#1C7C54;
+    --maxw:1180px;
+    --pad:clamp(1.25rem,5vw,3rem);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:17px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+  .eyebrow{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;font-size:.72rem;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted);font-weight:500;
+  }
+
+  /* ============ BUTTONS ============ */
+  .btn{
+    display:inline-flex;align-items:center;gap:.55rem;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-weight:700;font-size:.98rem;letter-spacing:.01em;padding:.85rem 1.4rem;
+    border-radius:2px;border:1.5px solid transparent;cursor:pointer;transition:.16s ease;
+    line-height:1;
+  }
+  .btn-primary{background:var(--signal);color:#fff}
+  .btn-primary:hover{background:#1a2fc4;transform:translateY(-1px)}
+  .btn-ghost{background:transparent;border-color:currentColor;color:inherit}
+  .btn-ghost:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .btn:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+    outline:2px solid var(--signal);outline-offset:3px
+  }
+
+  /* ============ NAV ============ */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(21,23,28,.92);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line-dk);color:var(--paper)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .mark{display:flex;align-items:center;gap:.7rem;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:800;letter-spacing:.02em}
+  .mark .badge{width:30px;height:30px;border:1.5px solid var(--signal-ink);border-radius:2px;
+    display:grid;place-items:center;font-size:.8rem;color:var(--signal-ink);font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+  .nav-links{display:flex;align-items:center;gap:1.6rem;font-size:.92rem;font-weight:500}
+  .nav-links a.txt{color:var(--muted-dk);transition:.15s}
+  .nav-links a.txt:hover{color:var(--paper)}
+  .nav-toggle{display:none;background:none;border:0;color:var(--paper);cursor:pointer;padding:.4rem}
+  @media(max-width:760px){
+    .nav-links .txt{display:none}
+  }
+
+  /* ============ HERO ============ */
+  .hero{background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;
+    background-image:linear-gradient(var(--line-dk) 1px,transparent 1px),linear-gradient(90deg,var(--line-dk) 1px,transparent 1px);
+    background-size:56px 56px;opacity:.35;mask-image:radial-gradient(120% 80% at 80% 0%,#000 30%,transparent 75%)}
+  .hero .wrap{position:relative;padding-top:clamp(3.5rem,9vw,6.5rem);padding-bottom:clamp(3rem,7vw,5rem)}
+  .hero h1{
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:900;letter-spacing:-.02em;line-height:1.02;
+    font-size:clamp(2.3rem,6.2vw,4.7rem);margin:1.3rem 0 0;max-width:16ch;
+  }
+  .hero h1 em{font-style:normal;color:var(--signal-ink)}
+  .hero .sub{max-width:52ch;margin:1.5rem 0 0;color:var(--muted-dk);font-size:clamp(1rem,1.6vw,1.18rem)}
+  .hero-cta{display:flex;gap:.9rem;flex-wrap:wrap;margin-top:2.2rem}
+
+  /* signature: process line */
+  .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin-top:3.4rem;
+    border:1px solid var(--line-dk);border-radius:3px;overflow:hidden}
+  .flow .node{flex:1 1 160px;padding:1.1rem 1.25rem;border-right:1px solid var(--line-dk);position:relative}
+  .flow .node:last-child{border-right:0}
+  .flow .node .n{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;font-size:.7rem;color:var(--signal-ink);letter-spacing:.1em}
+  .flow .node .t{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:700;font-size:1.05rem;margin-top:.35rem}
+  .flow .node .d{font-size:.82rem;color:var(--muted-dk);margin-top:.2rem;line-height:1.4}
+  @media(max-width:640px){.flow .node{flex-basis:100%;border-right:0;border-bottom:1px solid var(--line-dk)}.flow .node:last-child{border-bottom:0}}
+
+  /* ============ SECTION SHELL ============ */
+  section{padding-block:clamp(3.5rem,8vw,6rem)}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+    border-top:1.5px solid var(--ink);padding-top:1rem;margin-bottom:2.5rem}
+  .sec-head h2{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:800;letter-spacing:-.01em;
+    font-size:clamp(1.7rem,3.6vw,2.6rem);margin:.4rem 0 0}
+  .sec-head p{margin:.6rem 0 0;max-width:46ch;color:var(--muted);font-size:.98rem}
+
+  /* ============ OFFER MODULES ============ */
+  .modules{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem}
+  .mod{background:var(--paper-2);border:1px solid var(--line);border-radius:3px;
+    padding:1.6rem 1.5rem 1.5rem;display:flex;flex-direction:column;transition:.18s ease}
+  .mod:hover{border-color:var(--ink);transform:translateY(-3px);box-shadow:0 14px 30px -18px rgba(21,23,28,.55)}
+  .mod .code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;font-size:.72rem;letter-spacing:.12em;color:var(--signal);font-weight:700}
+  .mod h3{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:800;font-size:1.35rem;margin:.6rem 0 .3rem}
+  .mod .lead{color:var(--muted);font-size:.92rem;margin:0 0 1.1rem;line-height:1.45}
+  .outcome{font-size:.86rem;line-height:1.45;margin:.2rem 0 1.1rem;padding:.75rem .85rem;border-left:3px solid var(--signal);background:rgba(36,59,224,.06);color:var(--ink-2)}
+  .outcome b{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:800}
+  .rows{border-top:1px solid var(--line);margin-top:auto}
+  .row{display:flex;justify-content:space-between;align-items:baseline;gap:.75rem;
+    padding:.72rem 0;border-bottom:1px solid var(--line)}
+  .row .name{font-weight:500;font-size:.95rem}
+  .row .price{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;font-weight:700;font-size:.92rem;white-space:nowrap}
+  .mod .pick{margin-top:1.2rem}
+  .mod .pick a{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:700;font-size:.9rem;color:var(--signal);
+    display:inline-flex;align-items:center;gap:.4rem;border-bottom:1.5px solid transparent;padding-bottom:2px;transition:.15s}
+  .mod .pick a:hover{border-color:var(--signal)}
+  .ai-card{border-color:rgba(36,59,224,.45);}
+  .ai-card .code{color:var(--signal)}
+
+  /* AI upsell strip */
+  .ai-strip{background:var(--ink);color:var(--paper);border-radius:3px;margin-top:1.25rem;
+    padding:1.6rem 1.6rem;display:grid;grid-template-columns:1.1fr 2fr;gap:1.5rem;align-items:center}
+  .ai-strip h3{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:800;font-size:1.3rem;margin:.4rem 0 .4rem}
+  .ai-strip .lead{color:var(--muted-dk);font-size:.9rem;margin:0}
+  .ai-rows{display:flex;flex-direction:column;gap:0}
+  .ai-rows .row{border-color:var(--line-dk)}
+  .ai-rows .row:first-child{border-top:1px solid var(--line-dk)}
+  .ai-rows .price{color:var(--signal-ink)}
+  @media(max-width:720px){.ai-strip{grid-template-columns:1fr}}
+
+  /* ============ WARUM ============ */
+  .why{background:var(--ink);color:var(--paper)}
+  .why .grid{display:grid;grid-template-columns:1.3fr 1fr;gap:clamp(1.5rem,4vw,3.5rem);align-items:start}
+  .why .sec-head{border-color:var(--line-dk)}
+  .why h2{color:var(--paper)}
+  .why .statement{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:600;font-size:clamp(1.25rem,2.4vw,1.7rem);
+    line-height:1.35;letter-spacing:-.01em}
+  .why .statement b{color:var(--signal-ink);font-weight:800}
+  .chips{display:flex;flex-direction:column;gap:.7rem}
+  .chip{border:1px solid var(--line-dk);border-radius:3px;padding:.85rem 1rem}
+  .chip .k{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;font-size:.68rem;letter-spacing:.12em;color:var(--signal-ink);text-transform:uppercase}
+  .chip .v{font-size:.95rem;margin-top:.25rem;color:var(--paper)}
+  @media(max-width:720px){.why .grid{grid-template-columns:1fr}}
+
+  /* ============ ABLAUF ============ */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0;
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .step{padding:1.3rem 1.3rem 1.5rem;border-right:1px solid var(--line);position:relative}
+  .step:nth-child(3n){border-right:0}
+  .step .num{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;font-weight:700;color:var(--signal);font-size:.85rem}
+  .step h4{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:700;font-size:1.05rem;margin:.5rem 0 .3rem}
+  .step p{margin:0;font-size:.87rem;color:var(--muted);line-height:1.45}
+  @media(max-width:860px){.step:nth-child(3n){border-right:1px solid var(--line)}.step:nth-child(2n){border-right:0}}
+  @media(max-width:560px){.step{border-right:0!important;border-bottom:1px solid var(--line)}.step:last-child{border-bottom:0}}
+
+  /* ============ ANFRAGE ============ */
+  .anfrage{background:var(--paper-2);border-top:1px solid var(--line)}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem 1.4rem}
+  .field{display:flex;flex-direction:column;gap:.4rem}
+  .field.full{grid-column:1/-1}
+  .field label{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;font-size:.72rem;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);font-weight:500}
+  .field input,.field select,.field textarea{
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:1rem;color:var(--ink);background:var(--paper);
+    border:1.5px solid var(--line);border-radius:2px;padding:.75rem .85rem;width:100%;transition:.15s}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--signal)}
+  .field textarea{resize:vertical;min-height:92px}
+  .form-actions{grid-column:1/-1;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin-top:.4rem}
+  .form-note{font-size:.82rem;color:var(--muted);max-width:40ch}
+  @media(max-width:640px){.form-grid{grid-template-columns:1fr}}
+
+  /* ============ FOOTER ============ */
+  footer{background:var(--ink);color:var(--muted-dk);padding-block:2.5rem;border-top:1px solid var(--line-dk)}
+  footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
+  footer .mark{color:var(--paper)}
+  footer .legal{display:flex;gap:1.3rem;font-size:.85rem;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+  footer a:hover{color:var(--paper)}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+  .rows a.row{color:inherit;text-decoration:none;transition:.14s ease}
+  .rows a.row:hover{background:rgba(36,59,224,.06);padding-left:.45rem;padding-right:.45rem;color:var(--signal)}
+  .detail-hero{background:var(--ink);color:var(--paper);position:relative;overflow:hidden}
+  .detail-hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line-dk) 1px,transparent 1px),linear-gradient(90deg,var(--line-dk) 1px,transparent 1px);background-size:56px 56px;opacity:.28;mask-image:radial-gradient(120% 80% at 78% 0%,#000 25%,transparent 78%)}
+  .detail-hero .wrap{position:relative;padding-top:clamp(1.4rem,3.2vw,2.4rem);padding-bottom:clamp(2.5rem,6vw,4.5rem)}
+  .detail-hero h1{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:900;letter-spacing:-.025em;line-height:1.03;font-size:clamp(2.6rem,6.6vw,5.2rem);margin:.8rem 0 0;max-width:15ch}
+  .detail-hero h1 em{font-style:normal;color:var(--signal-ink)}
+  .detail-hero .sub{max-width:58ch;margin:1.35rem 0 0;color:var(--muted-dk);font-size:clamp(1rem,1.5vw,1.18rem)}
+  .backlink{display:flex;width:fit-content;align-items:center;gap:.45rem;color:var(--signal-ink);font-weight:700;font-size:.95rem;margin-bottom:1.6rem}
+  .offer-stack{display:grid;gap:1.1rem}
+  .offer-detail{background:var(--paper-2);border:1px solid var(--line);border-radius:3px;padding:1.55rem;scroll-margin-top:86px}
+  .offer-detail h3{font-size:1.35rem;margin:.35rem 0 .45rem;font-weight:850;letter-spacing:-.01em}
+  .offer-detail .price-tag{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;font-weight:800;color:var(--signal);white-space:nowrap}
+  .offer-titleline{display:flex;justify-content:space-between;gap:1rem;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:.7rem;margin-bottom:1rem}
+  .detail-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:1.2rem;margin-top:.9rem}
+  .detail-grid ul{margin:.2rem 0 0;padding-left:1.1rem;color:var(--muted)}
+  .detail-grid li{margin:.35rem 0}
+  .box-note{border-left:3px solid var(--signal);background:rgba(36,59,224,.06);padding:.85rem 1rem;color:var(--ink-2);font-size:.92rem;line-height:1.45}
+  .muted{color:var(--muted)}
+  .mini-nav{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:2rem}
+  .mini-nav a{border:1px solid var(--line-dk);color:var(--paper);padding:.55rem .75rem;border-radius:2px;font-size:.86rem}
+  .mini-nav a:hover{border-color:var(--signal-ink);color:var(--signal-ink)}
+  .cta-band{background:var(--ink);color:var(--paper);border-radius:3px;padding:1.5rem;margin-top:1.3rem;display:flex;justify-content:space-between;gap:1rem;align-items:center;flex-wrap:wrap}
+  .cta-band p{margin:0;color:var(--muted-dk);max-width:58ch}
+  .fineprint{font-size:.83rem;color:var(--muted);line-height:1.45;margin-top:1.2rem}
+  @media(max-width:760px){.detail-grid{grid-template-columns:1fr}.offer-titleline{flex-direction:column;gap:.2rem}.detail-hero h1{max-width:100%}}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="mark" href="index.html#top"><span class="badge">CS</span>Clear&nbsp;Systems&nbsp;Studio</a>
+    <nav class="nav-links">
+      <a class="txt" href="index.html#angebote">Angebote</a>
+      <a class="txt" href="index.html#warum">Warum ich</a>
+      <a class="txt" href="index.html#ablauf">Ablauf</a>
+      <a class="btn btn-primary" href="index.html#anfrage">Anfrage stellen</a>
+    </nav>
+  </div>
+</header>
+
+<section class="detail-hero" id="top">
+  <div class="wrap">
+    <a class="backlink" href="index.html#angebote">← Zurück zur Übersicht</a>
+    <span class="eyebrow" style="color:var(--signal-ink)">Angebotsseiten & Landingpages</span>
+    <h1>Angebote sichtbar machen. <em>Anfragen ermöglichen.</em></h1>
+    <p class="sub">Für Selbstständige und Unternehmen, die ein Angebot verständlich, professionell und anfragbar machen wollen.</p>
+    <div class="hero-cta"><a class="btn btn-primary" href="index.html#anfrage">Anfrage stellen →</a><a class="btn btn-ghost" href="#pakete">Pakete ansehen</a></div>
+    <div class="mini-nav"><a href="#quick-fix">Landingpage Quick Fix</a><a href="#basic">Angebotsseite Basic</a><a href="#formular">Angebotsseite + Formular</a><a href="#lead-funnel">Lead-Funnel + Automation</a></div>
+  </div>
+</section>
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal"><div><span class="eyebrow">Mehrwert</span><h2>Was diese Säule leistet.</h2></div></div>
+    <div class="grid" style="display:grid;grid-template-columns:1.25fr .9fr;gap:clamp(1.4rem,4vw,3rem);align-items:start">
+      <p class="statement reveal" style="font-size:clamp(1.18rem,2.1vw,1.55rem);font-weight:650;line-height:1.38;margin:0">Ein Angebot verkauft nicht, wenn es nur hübsch aussieht. Es muss sofort verständlich machen, für wen es ist, welches Problem es löst und was der nächste Schritt ist. Ich übersetze Angebot, Zielgruppe und Nutzenversprechen in eine klare Seitenstruktur mit Copy, CTA und optionalem Lead-Funnel.</p>
+      <div class="chips reveal"><div class="chip"><div class="k">Positionierung</div><div class="v">Angebot, Zielgruppe und Nutzen werden auf den Punkt gebracht.</div></div><div class="chip"><div class="k">Conversion</div><div class="v">Struktur, Copy und CTA führen zu einer klaren Handlung.</div></div><div class="chip"><div class="k">Lead-System</div><div class="v">Optional mit Formular, CRM-Anbindung und Follow-up-Logik.</div></div></div>
+    </div>
+  </div>
+</section>
+<section id="pakete" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head reveal"><div><span class="eyebrow">Pakete</span><h2>Leistungen und klare Ergebnisse.</h2></div><p>Alle Preise sind Startpreise. Der finale Umfang wird nach Anfrage und Materiallage bestätigt.</p></div>
+    <div class="offer-stack">
+      <article class="offer-detail reveal" id="quick-fix">
+        <div class="offer-titleline"><h3>Landingpage Quick Fix</h3><span class="price-tag">ab 299 €</span></div>
+        <p>Für bestehende Seiten, die unklar wirken, zu wenig anfragen oder das Angebot nicht sofort verständlich machen.</p>
+        <p class="box-note"><b>Ergebnis:</b> Du bekommst schnelle Klarheit, warum die Seite nicht überzeugt und welche Änderungen den größten Effekt haben.</p>
+        <div class="detail-grid">
+          <div><b>Enthalten</b><ul><li>Analyse der bestehenden Seite</li><li>Headline, Struktur und CTA prüfen</li><li>Copy- und Angebotslogik schärfen</li><li>konkrete Verbesserungsvorschläge</li><li>priorisierte To-do-Liste</li></ul></div>
+          <div><b>Nicht enthalten / klare Grenze</b><ul><li>keine vollständige Neuumsetzung</li><li>keine technische Wartung</li><li>keine Rechtstexte</li></ul></div>
+        </div>
+      </article>
+      <article class="offer-detail reveal" id="basic">
+        <div class="offer-titleline"><h3>Angebotsseite Basic</h3><span class="price-tag">ab 899 €</span></div>
+        <p>Für Selbstständige, Events, Workshops, Beratungen oder kleine Unternehmen, die eine klare Angebotsseite brauchen.</p>
+        <p class="box-note"><b>Ergebnis:</b> Aus deinem Angebot entsteht eine verständliche, professionelle Seite mit klarer Handlung: anfragen, buchen oder Kontakt aufnehmen.</p>
+        <div class="detail-grid">
+          <div><b>Enthalten</b><ul><li>Angebotsklärung</li><li>Zielgruppen- und Nutzenlogik</li><li>Seitenstruktur</li><li>professionelle Texte / Copy</li><li>einfache mobil optimierte Umsetzung</li><li>Kontaktmöglichkeit oder Buchungslink</li><li>Basis-SEO</li></ul></div>
+          <div><b>Nicht enthalten / klare Grenze</b><ul><li>kein vollständiges Corporate Design</li><li>keine komplexe Website mit Unterseiten</li><li>keine laufende Wartung</li></ul></div>
+        </div>
+      </article>
+      <article class="offer-detail reveal" id="formular">
+        <div class="offer-titleline"><h3>Angebotsseite + Formular</h3><span class="price-tag">ab 1.490 €</span></div>
+        <p>Für Angebote, die nicht nur sichtbar sein, sondern strukturiert Anfragen einsammeln sollen.</p>
+        <p class="box-note"><b>Ergebnis:</b> Die Seite erzeugt nicht nur Aufmerksamkeit, sondern einen klaren Anfrageprozess mit verwertbaren Informationen.</p>
+        <div class="detail-grid">
+          <div><b>Enthalten</b><ul><li>alles aus Angebotsseite Basic</li><li>Kontakt- oder Anfrageformular</li><li>strukturierte Anfragefelder</li><li>E-Mail-Benachrichtigung</li><li>einfache Lead-Übersicht in Sheet/Airtable/CRM</li><li>Übergabe der Pflegehinweise</li></ul></div>
+          <div><b>Nicht enthalten / klare Grenze</b><ul><li>keine rechtliche Prüfung von Impressum/Datenschutz</li><li>keine großen Datenbank- oder Login-Systeme</li><li>keine Toolkosten</li></ul></div>
+        </div>
+      </article>
+      <article class="offer-detail reveal" id="lead-funnel">
+        <div class="offer-titleline"><h3>Lead-Funnel + Automation</h3><span class="price-tag">ab 2.490 €</span></div>
+        <p>Für kleine Unternehmen, die aus einer Angebotsseite einen einfachen Lead-Prozess machen wollen.</p>
+        <p class="box-note"><b>Ergebnis:</b> Anfragen landen nicht mehr lose im Postfach, sondern in einem nachvollziehbaren Lead-Prozess mit nächstem Schritt.</p>
+        <div class="detail-grid">
+          <div><b>Enthalten</b><ul><li>Landingpage / Angebotsseite</li><li>Formular mit Qualifizierungsfragen</li><li>CRM-/Sheet-Anbindung</li><li>automatische Benachrichtigung</li><li>Follow-up-Mail oder Antwortvorlage</li><li>einfache Status- oder Pipeline-Logik</li><li>kurze Dokumentation</li></ul></div>
+          <div><b>Nicht enthalten / klare Grenze</b><ul><li>kein komplexer Sales Funnel über Monate</li><li>keine bezahlten Ads</li><li>keine umfangreiche CRM-Migration</li></ul></div>
+        </div>
+      </article></div>
+    <div class="cta-band reveal"><div><b>Unsicher, welches Paket passt?</b><p>Schick kurz Ziel, Materiallage und Deadline. Ich empfehle dir den kleinsten sinnvollen Scope.</p></div><a class="btn btn-primary" href="index.html#anfrage">Anfrage stellen →</a></div>
+    <p class="fineprint">Standardmäßig ist eine Korrekturrunde enthalten, sofern im Angebot nichts anderes vereinbart wird. Es wird keine Einladung, Buchung, Umsatzsteigerung oder bestimmte geschäftliche Entscheidung garantiert.</p>
+  </div>
+</section>
+<footer>
+  <div class="wrap">
+    <a class="mark" href="index.html#top"><span class="badge">CS</span>Clear&nbsp;Systems&nbsp;Studio</a>
+    <div class="legal">
+      <a href="index.html#anfrage">Anfrage</a>
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </div>
+  </div>
+</footer>
+<script>
+const io=new IntersectionObserver((ents)=>{ents.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:.14});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
