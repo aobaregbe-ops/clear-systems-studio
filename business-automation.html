@@ -84,6 +84,12 @@
   .cta p{color:var(--muted-dk);max-width:46ch;margin:0 auto 2rem;font-size:1.05rem}
   .cta .hero-cta{justify-content:center}
 
+  .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.6rem}
+  .tcard{border:1px solid var(--line);border-radius:3px;padding:1.1rem 1.2rem;background:var(--paper-2)}
+  .tcard .k{font-family:ui-monospace,monospace;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--signal);font-weight:700}
+  .tcard .v{margin-top:.35rem;font-size:.95rem;color:var(--ink);line-height:1.45}
+  .trust-lead{font-size:clamp(1.15rem,2vw,1.4rem);font-weight:600;line-height:1.45;max-width:62ch;margin:0}
+  @media(max-width:720px){.trust{grid-template-columns:1fr}}
   .kontakt{background:var(--paper-2);border-top:1px solid var(--line)}
   .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem 1.4rem;max-width:760px;margin-top:.5rem}
   .field{display:flex;flex-direction:column;gap:.4rem}.field.full{grid-column:1/-1}
@@ -192,6 +198,16 @@
     </div>
   </div>
 </section>
+
+<section id="warum"><div class="wrap">
+  <div class="sec-head"><span class="eyebrow">Warum mit mir</span><h2>Business Development trifft AI-Umsetzung.</h2></div>
+  <p class="trust-lead">Ich verbinde Erfahrung aus Business Development und Vertrieb mit aktueller Umsetzung in AI und Automatisierung: Ich verstehe den Geschäftsprozess hinter dem Projekt – und baue die Lösung selbst. Kein reiner Berater, kein reiner Entwickler, sondern beides in einer Person.</p>
+  <div class="trust">
+    <div class="tcard"><div class="k">Business Development</div><div class="v">Prozesse, Vertrieb und Ziele aus der Praxis verstanden – nicht nur theoretisch.</div></div>
+    <div class="tcard"><div class="k">AI &amp; Automation</div><div class="v">LLM-Integration, CRM-/Workflow-Automation und Full-Stack-Umsetzung.</div></div>
+    <div class="tcard"><div class="k">Klarer Modus</div><div class="v">Begrenzte Sprints, feste Preise, sauberer Handover statt Blackbox.</div></div>
+  </div>
+</div></section>
 
 <section id="ablauf">
   <div class="wrap">
