@@ -1,0 +1,19 @@
+# Saubere URLs ohne .html (Rewrite, URL bleibt schön stehen)
+
+# Consumer
+/career-positioning              /career-positioning.html              200
+/angebotsseiten-landingpages     /angebotsseiten-landingpages.html     200
+/crm-workflows-automatisierung   /crm-workflows-automatisierung.html   200
+/ai-workflow-tools               /ai-workflow-tools.html               200
+/impressum                       /impressum.html                       200
+/datenschutz                     /datenschutz.html                     200
+/danke                           /danke.html                           200
+/danke-b2b                       /danke-b2b.html                       200
+
+# B2B Premium
+/business-automation             /business-automation.html             200
+/ai-automation-sprint            /ai-automation-sprint.html            200
+/crm-workflow-sprint             /crm-workflow-sprint.html             200
+/ai-workflow-tool                /internal-ai-tool.html                200
+/llm-architecture-review         /llm-architecture-review.html         200
+/fullstack-ai-mvp                /fullstack-ai-mvp.html                200
